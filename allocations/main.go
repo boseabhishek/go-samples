@@ -27,7 +27,7 @@ func main2() {
 //go:noinline
 func stackIt2() *int {
 	y := 2
-	res := y * 2
+	res := y * 2 // moved to heap: res
 	return &res
 }
 
@@ -37,7 +37,7 @@ func main3() {
 }
 
 //go:noinline
-func stackIt3(y *int) int {
+func stackIt3(y *int) int { //y does not escape
 	res := *y * 2
 	return res
 }
@@ -67,7 +67,7 @@ func CreateCopy() structs.BigStruct {
 
 //go:noinline
 func CreatePointer() *structs.BigStruct {
-	return &structs.BigStruct{
+	return &structs.BigStruct{ //  &structs.BigStruct{...} escapes to heap
 		A: 123,
 		B: 456,
 		C: 789,
